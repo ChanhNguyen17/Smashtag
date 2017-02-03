@@ -8,10 +8,13 @@
 
 import UIKit
 import Twitter
+import CoreData
 
 class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     
     // MARK: Model
+    
+    var managedObjectContext: NSManagedObjectContext? = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
     
     var tweets = [Array<Twitter.Tweet>](){
         didSet {
@@ -49,6 +52,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
                     if request == weakSelf?.lastTwitterRequest {
                         if !newTweets.isEmpty {
                             weakSelf?.tweets.insert(newTweets, at: 0)
+                            weakSelf?.updateDatabase(newTweets)
                         }
                     }
                     weakSelf?.refreshControl?.endRefreshing()
@@ -56,6 +60,44 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
             }
         } else {
             self.refreshControl?.endRefreshing()
+        }
+    }
+    
+    fileprivate func updateDatabase(_ newTweets: [Twitter.Tweet]) {
+        managedObjectContext?.perform {
+            for twitterInfo in newTweets {
+                // create a new, unique Tweet with that Twitter info
+                _ = Tweet.tweetWithTwitterInfo(twitterInfo, inManagedObjectContext: self.managedObjectContext!)
+            }
+            do {
+                try self.managedObjectContext?.save()
+            } catch let error {
+                print("Core Date Error: \(error)")
+            }
+        }
+        printDatabaseStatidtics()
+        print("done printing database statistics")
+    }
+    
+    private func printDatabaseStatidtics() {
+        managedObjectContext?.perform {
+            if let results = try? self.managedObjectContext!.fetch(NSFetchRequest(entityName: "TwitterUser")) {
+                print("\(results.count) TwitterUsers")
+            }
+            // a more efficient way to count objects ...
+            let tweetCount = try? self.managedObjectContext!.count(for: NSFetchRequest(entityName: "Tweet"))
+            if let tweetCountUnwrapped = tweetCount{
+                print("\(tweetCountUnwrapped) Tweets")
+            }
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "TweetersMentioningSearchTerm" {
+            if let tweetersTVC = segue.destination as? TweetersTableViewController {
+                tweetersTVC.mention = searchText
+                tweetersTVC.managedObjectContext = managedObjectContext
+            }
         }
     }
     

@@ -107,7 +107,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VbC-Cb-NNK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="244" y="-3"/>
+            <point key="canvasLocation" x="44" y="-183"/>
         </scene>
         <!--Tweeters Table View Controller-->
         <scene sceneID="c2w-1c-ea3">
@@ -151,7 +151,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bga-IT-WAQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1073" y="5"/>
+            <point key="canvasLocation" x="1100" y="-149"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="HWy-q5-nGV">
@@ -169,7 +169,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ehP-Uo-zR0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-641" y="-210"/>
+            <point key="canvasLocation" x="-753" y="-200"/>
         </scene>
     </scenes>
 </document>

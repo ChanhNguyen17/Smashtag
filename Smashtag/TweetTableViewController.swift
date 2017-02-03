@@ -79,11 +79,13 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
         print("done printing database statistics")
     }
     
-    private func printDatabaseStatidtics() {
+    fileprivate func printDatabaseStatidtics() {
         managedObjectContext?.perform {
+            
             if let results = try? self.managedObjectContext!.fetch(NSFetchRequest(entityName: "TwitterUser")) {
                 print("\(results.count) TwitterUsers")
             }
+            
             // a more efficient way to count objects ...
             let tweetCount = try? self.managedObjectContext!.count(for: NSFetchRequest(entityName: "Tweet"))
             if let tweetCountUnwrapped = tweetCount{
@@ -130,7 +132,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     
     // MARK: Constants
     
-    private struct Storyboard {
+    fileprivate struct Storyboard {
         static let TweetCellIdentifier = "Tweet"
     }
     
